@@ -1,0 +1,461 @@
+/**
+ * CV Moderno - JavaScript
+ * Interactividad, animaciones y funcionalidades
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
+    initNavbar();
+    initScrollAnimations();
+    initTypingEffect();
+    initSkillBars();
+    initScrollToTop();
+    initSmoothScroll();
+    initActiveNavLink();
+});
+
+// THEME TOGGLE
+function initThemeToggle() {
+    const themeBtn = document.getElementById('theme-btn');
+    const body = document.body;
+    const icon = themeBtn.querySelector('i');
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        body.setAttribute('data-theme', 'dark');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+    themeBtn.addEventListener('click', () => {
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+            body.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    });
+}
+
+// NAVBAR
+function initNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const links = document.querySelectorAll('.nav-link');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 100) {
+            navbar.style.background = getComputedStyle(document.body).getPropertyValue('--bg-primary') + 'ee';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = '';
+            navbar.style.boxShadow = '';
+        }
+        if (currentScroll > lastScroll && currentScroll > 200) {
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            navbar.style.transform = 'translateY(0)';
+        }
+        lastScroll = currentScroll;
+    });
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        if (navLinks.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+}
+
+// SCROLL ANIMATIONS
+function initScrollAnimations() {
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                if (entry.target.classList.contains('skills-category')) animateSkillBars();
+                if (entry.target.classList.contains('stat-card')) animateCounter(entry.target);
+            }
+        });
+    }, observerOptions);
+    const animatedElements = document.querySelectorAll('.section-header, .timeline-item, .education-card, .skills-category, .certification-card, .contact-item, .about-stats, .about-text, .stat-card');
+    animatedElements.forEach(el => { el.classList.add('fade-in'); observer.observe(el); });
+}
+
+// TYPING EFFECT
+function initTypingEffect() {
+    const typingElement = document.querySelector('.typing-text');
+    if (!typingElement) return;
+    const texts = [typingElement.textContent, 'Desarrollador Full Stack', 'Especialista Odoo', 'Ingeniero de Software'];
+    let textIndex = 0, charIndex = 0, isDeleting = false, typingSpeed = 100;
+    function type() {
+        const currentText = texts[textIndex];
+        if (isDeleting) {
+            typingElement.textContent = currentText.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50;
+        } else {
+            typingElement.textContent = currentText.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 100;
+        }
+        if (!isDeleting && charIndex === currentText.length) {
+            isDeleting = true;
+            typingSpeed = 2000;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            textIndex = (textIndex + 1) % texts.length;
+            typingSpeed = 500;
+        }
+        setTimeout(type, typingSpeed);
+    }
+    setTimeout(type, 1000);
+}
+
+// SKILL BARS
+function initSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    skillBars.forEach(bar => {
+        const progress = bar.getAttribute('data-progress');
+        bar.style.width = '0';
+        bar.dataset.target = progress;
+    });
+}
+
+function animateSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    skillBars.forEach((bar, index) => {
+        setTimeout(() => {
+            const target = bar.dataset.target;
+            if (target) bar.style.width = target + '%';
+        }, index * 100);
+    });
+}
+
+// COUNTER
+function animateCounter(statCard) {
+    const numberElement = statCard.querySelector('.stat-number');
+    if (!numberElement) return;
+    const finalValue = parseInt(numberElement.textContent);
+    if (isNaN(finalValue)) return;
+    let currentValue = 0;
+    const duration = 2000;
+    const increment = finalValue / (duration / 16);
+    function updateCounter() {
+        currentValue += increment;
+        if (currentValue < finalValue) {
+            numberElement.textContent = Math.floor(currentValue);
+            requestAnimationFrame(updateCounter);
+        } else {
+            numberElement.textContent = finalValue;
+        }
+    }
+    updateCounter();
+}
+
+// SCROLL TO TOP
+function initScrollToTop() {
+    const scrollBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 500) scrollBtn.classList.add('visible');
+        else scrollBtn.classList.remove('visible');
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+// SMOOTH SCROLL
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                window.scrollTo({ top: target.offsetTop - navbarHeight, behavior: 'smooth' });
+            }
+        });
+    });
+}
+
+// ACTIVE NAV LINK
+function initActiveNavLink() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+        const scrollY = window.pageYOffset;
+        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+        sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - navbarHeight - 100;
+            const sectionId = section.getAttribute('id');
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + sectionId) link.classList.add('active');
+                });
+            }
+        });
+    });
+}
+
+// PARALLAX
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) { func.apply(this, args); inThrottle = true; setTimeout(() => inThrottle = false, limit); }
+    };
+}
+window.addEventListener('scroll', throttle(() => {
+    const hero = document.querySelector('.hero');
+    const scrolled = window.pageYOffset;
+    if (hero && scrolled < hero.offsetHeight) hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
+}, 10));
+
+// ============================================================
+// PDF DOWNLOAD - Generar PDF con JavaScript puro (jspdf)
+// ============================================================
+function downloadPDF() {
+    const btn = document.querySelector('button[onclick="downloadPDF()"]');
+    if (!btn) { console.error('Botón no encontrado'); return; }
+    
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+    btn.disabled = true;
+    
+    // Cargar jsPDF dinámicamente
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.onload = () => generatePDF(btn, originalText);
+    script.onerror = () => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert('Error al cargar librería. Usa Ctrl+P para imprimir.');
+    };
+    document.head.appendChild(script);
+}
+
+function generatePDF(btn, originalText) {
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const marginLeft = 15;
+        const marginTop = 15;
+        const pageWidth = 210;
+        const pageHeight = 297;
+        const contentWidth = pageWidth - marginLeft * 2;
+        let y = marginTop;
+        
+        // Colores
+        const primaryColor = '#6366f1';
+        const textColor = '#1f2937';
+        const grayColor = '#6b7280';
+        
+        // ==================== HEADER ====================
+        doc.setFontSize(22);
+        doc.setTextColor(textColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('José Ángel Ávila Cruz', pageWidth / 2, y, { align: 'center' });
+        y += 8;
+        
+        doc.setFontSize(14);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Desarrollador de Software', pageWidth / 2, y, { align: 'center' });
+        y += 7;
+        
+        doc.setFontSize(10);
+        doc.setTextColor(grayColor);
+        doc.text('angelip56@gmail.com | +52 55 1938 5839 | Tlalnepantla de Baz, Estado de México', pageWidth / 2, y, { align: 'center' });
+        y += 10;
+        
+        doc.setDrawColor(primaryColor);
+        doc.setLineWidth(0.5);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 10;
+        
+        // ==================== PERFIL ====================
+        doc.setFontSize(12);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('PERFIL PROFESIONAL', marginLeft, y);
+        y += 6;
+        
+        doc.setDrawColor(200, 200, 200);
+        doc.setLineWidth(0.3);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 5;
+        
+        doc.setFontSize(10);
+        doc.setTextColor(textColor);
+        doc.setFont('helvetica', 'normal');
+        const perfilText = 'Desarrollador de software con experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Dominio de varias plataformas, lenguajes y sistemas integrados. Experiencia en las herramientas y procedimientos de desarrollo más vanguardistas. Capaz de autogestión eficaz en proyectos independientes. Buenas habilidades de colaboración dentro de un equipo productivo.';
+        const perfilLines = doc.splitTextToSize(perfilText, contentWidth);
+        doc.text(perfilLines, marginLeft, y);
+        y += perfilLines.length * 5 + 5;
+        
+        // ==================== EXPERIENCIA ====================
+        if (y > pageHeight - 60) { doc.addPage(); y = marginTop; }
+        
+        doc.setFontSize(12);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('EXPERIENCIA PROFESIONAL', marginLeft, y);
+        y += 6;
+        
+        doc.setDrawColor(200, 200, 200);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 5;
+        
+        const experiencias = [
+            { cargo: 'Desarrollador Odoo', empresa: 'Tutum Technology', periodo: '2023 - Presente', descripcion: 'Desarrollo de módulos Odoo para proyectos empresariales: Administrador de archivos, Fibra Infraex, Administrador de personal Les Croissants.' },
+            { cargo: 'Desarrollador Freelance', empresa: 'Proyectos Independientes', periodo: '2021 - 2023', descripcion: 'Desarrollo de aplicaciones de visualización de producto con Unity y Godot para e-commerce.' },
+            { cargo: 'Desarrollador Odoo', empresa: 'Odoo Mexico', periodo: '2016 - Presente', descripcion: 'Desarrollo de addons y módulos completos, sistemas de facturación y descarga masiva de XML.' },
+            { cargo: 'Desarrollador Senior', empresa: 'Meus Technology SA de CV', periodo: '2021 - 2022', descripcion: 'Desarrollo de sistema de facturación y descarga masiva de XML SAT, desarrollo de IA, Machine Learning, OpenCV, TensorFlow.' },
+            { cargo: 'Desarrollador Senior', empresa: 'Raj Digital SA de CV', periodo: '2019 - 2023', descripcion: 'Desarrollo de sistemas en la nube, facturación, análisis de XML, gestión de viáticos, software dental, HelpDesk, OCR, Docker, Kubernetes.' },
+            { cargo: 'Desarrollador Senior', empresa: 'DimexPDG', periodo: '2014 - 2018', descripcion: 'Sistema de cálculo de rotación en engranes industriales, análisis de recursos humanos y contabilidad.' }
+        ];
+        
+        experiencias.forEach(exp => {
+            if (y > pageHeight - 40) { doc.addPage(); y = marginTop; }
+            
+            doc.setFontSize(10);
+            doc.setTextColor(textColor);
+            doc.setFont('helvetica', 'bold');
+            doc.text(exp.cargo, marginLeft, y);
+            
+            doc.setFontSize(9);
+            doc.setTextColor(primaryColor);
+            const periodoWidth = doc.getTextWidth(exp.periodo);
+            doc.text(exp.periodo, pageWidth - marginLeft - periodoWidth, y);
+            y += 4;
+            
+            doc.setFontSize(9);
+            doc.setTextColor(grayColor);
+            doc.setFont('helvetica', 'normal');
+            doc.text(exp.empresa, marginLeft, y);
+            y += 4;
+            
+            doc.setFontSize(9);
+            doc.setTextColor(textColor);
+            const descLines = doc.splitTextToSize(exp.descripcion, contentWidth);
+            doc.text(descLines, marginLeft, y);
+            y += descLines.length * 4 + 6;
+        });
+        
+        // ==================== HABILIDADES ====================
+        if (y > pageHeight - 50) { doc.addPage(); y = marginTop; }
+        
+        doc.setFontSize(12);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('HABILIDADES TÉCNICAS', marginLeft, y);
+        y += 6;
+        
+        doc.setDrawColor(200, 200, 200);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 5;
+        
+        const skills = ['Python', 'JavaScript', 'Java', 'HTML5/CSS3', 'Odoo', 'FastAPI', 'OpenCV', 'TensorFlow', 'Unity', 'Godot', 'GoLand', 'Mojo', 'PostgreSQL', 'MySQL', 'Docker', 'Kubernetes', 'AWS', 'GCP', 'Oracle Cloud'];
+        
+        let col = 0;
+        let row = 0;
+        const colWidth = contentWidth / 2;
+        
+        doc.setFontSize(9);
+        doc.setTextColor(textColor);
+        
+        skills.forEach((skill, index) => {
+            const x = marginLeft + (col * colWidth);
+            doc.text('• ' + skill, x, y + (row * 5));
+            col++;
+            if (col >= 2) { col = 0; row++; }
+        });
+        
+        y += (Math.ceil(skills.length / 2) + 1) * 5 + 10;
+        
+        // ==================== FORMACIÓN ====================
+        if (y > pageHeight - 50) { doc.addPage(); y = marginTop; }
+        
+        doc.setFontSize(12);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('FORMACIÓN ACADÉMICA', marginLeft, y);
+        y += 6;
+        
+        doc.setDrawColor(200, 200, 200);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 5;
+        
+        const formacion = [
+            { titulo: 'Maestría en Ciencias de la Computación', institucion: 'Universidad (En curso)', periodo: '2023 - Presente' },
+            { titulo: 'Ingeniería en Tecnología de la Información', institucion: 'Universidad Autónoma Fidel Velázquez', periodo: '2014' },
+            { titulo: 'Técnico Superior Universitario (Redes)', institucion: 'Universidad Autónoma Fidel Velázquez', periodo: '2012 - 2014' }
+        ];
+        
+        formacion.forEach(f => {
+            doc.setFontSize(10);
+            doc.setTextColor(textColor);
+            doc.setFont('helvetica', 'bold');
+            doc.text(f.titulo, marginLeft, y);
+            y += 4;
+            
+            doc.setFontSize(9);
+            doc.setTextColor(grayColor);
+            doc.setFont('helvetica', 'normal');
+            doc.text(f.institucion + ' | ' + f.periodo, marginLeft, y);
+            y += 6;
+        });
+        
+        // ==================== IDIOMAS ====================
+        y += 5;
+        doc.setFontSize(12);
+        doc.setTextColor(primaryColor);
+        doc.setFont('helvetica', 'bold');
+        doc.text('IDIOMAS', marginLeft, y);
+        y += 6;
+        
+        doc.setDrawColor(200, 200, 200);
+        doc.line(marginLeft, y, pageWidth - marginLeft, y);
+        y += 5;
+        
+        doc.setFontSize(10);
+        doc.setTextColor(textColor);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Inglés: Técnico (Nivel Intermedio)', marginLeft, y);
+        
+        // Guardar PDF
+        doc.save('CV_Jose_Angel_Avila_Cruz.pdf');
+        
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
+    } catch (error) {
+        console.error('Error generando PDF:', error);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert('Error al generar PDF. Usa Ctrl+P para imprimir y guarda como PDF.');
+    }
+}
+
+// Alternativa: imprimir
+function printCV() {
+    window.print();
+}

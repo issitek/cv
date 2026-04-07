@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CV Profesional - Desarrollador de Software">
+    <title>CV | José Ángel Ávila Cruz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* Estilos para impresión/PDF */
+@media print {
+    .navbar, .theme-toggle, .scroll-indicator, .scroll-top, .hamburger, .hero-buttons, .contact-buttons, .footer, .scroll-top {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 11pt !important;
+    }
+    .section {
+        page-break-inside: avoid;
+        padding: 10px 0 !important;
+    }
+    .hero {
+        min-height: auto !important;
+        padding: 20px !important;
+    }
+    .hero-image {
+        display: none !important;
+    }
+    .container {
+        max-width: 100% !important;
+        padding: 0 10px !important;
+    }
+    .timeline-item, .skill-item, .education-card, .certification-card, .contact-item, .stat-card {
+        page-break-inside: avoid;
+    }
+}
+
+/* Estilos para el modo PDF - más específicos */
+.pdf-generating {
+    background: white !important;
+}
+.pdf-generating * {
+    visibility: hidden;
+}
+.pdf-generating .section {
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white !important;
+    page-break-inside: avoid;
+}
+</style>
+</head>
+<body>
+    <!-- Toggle Theme -->
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Cambiar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-text">CV</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+            <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+            <li><a href="#experiencia" class="nav-link">Experiencia</a></li>
+            <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+            <li><a href="#contacto" class="nav-link">Contacto</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-greeting">¡Hola! Soy</p>
+                <h1 class="hero-title">
+                    <span class="name">José Ángel Ávila Cruz</span>
+                </h1>
+                <h2 class="hero-subtitle">
+                    <span class="typing-text">Ingeniería en Tecnologías de la Información</span>
+                    <span class="cursor">|</span>
+                </h2>
+                <p class="hero-description">
+                    Desarrollador de software con experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Dominio de varias plataformas, lenguajes y sistemas integrados. Experiencia en las herramientas y procedimientos de desarrollo más vanguardistas. Capaz de autogestión eficaz en proyectos independientes. Buenas habilidades de colaboración dentro de un equipo productivo.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contacto" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Contactar
+                    </a>
+                    <a href="#experiencia" class="btn btn-secondary">
+                        <i class="fas fa-briefcase"></i>
+                        Ver Experiencia
+                    </a>
+                </div>
+                <div class="hero-social">
+                    <a href="https://www.linkedin.com/in/angel-avilas" class="social-link" aria-label="LinkedIn" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100024238763838" class="social-link" aria-label="Facebook" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="mailto:angelip56@gmail.com" class="social-link" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="tel:+525519385839" class="social-link" aria-label="Teléfono">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <div class="image-placeholder">
+                        <!--<i class="fas fa-user"></i>-->
+                        <img src="/img/Para_cv.jpg" alt="">
+                        <span>Tu Foto</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Desplaza</span>
+        </div>
+    </section>
+
+    <!-- Sobre Mí -->
+    <section id="sobre-mi" class="about section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Sobre Mí</span>
+                <h2 class="section-title">Conóceme</h2>
+                <p class="section-subtitle">Mi trayectoria profesional</p>
+            </div>
+            <div class="about-content">
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">20+</span>
+                        <span class="stat-label">Años de Experiencia</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">50</span>
+                        <span class="stat-label">Proyectos Completados</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Certificaciones</span>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>
+                        Desarrollador de software con más de 20 años de experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Especializado en tecnologías cloud, desarrollo de sistemas de facturación, inteligencia artificial y análisis de datos. Dominio de varias plataformas, lenguajes y sistemas integrados con experiencia en herramientas y procedimientos de desarrollo vanguardistas.
+                    </p>
+                    <p>
+                        <strong>Fecha de Nacimiento:</strong> 08/07/1983<br>
+                        <strong>Nacionalidad:</strong> Mexicana<br>
+                        <strong>Licencia:</strong> Permanente CDMX
+                    </p>
+                    <div class="about-info">
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Tlalnepantla de Baz, Estado de México</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>angelip56@gmail.com</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+52 55 1938 5839</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Desarrollador Senior</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiencia -->
+    <section id="experiencia" class="experience section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Experiencia</span>
+                <h2 class="section-title">Trayectoria Profesional</h2>
+                <p class="section-subtitle">Mi camino en el mundo laboral</p>
+            </div>
+            <div class="timeline">
+                <!-- Experiencia 1 - Actual -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>2023 - Presente</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador Odoo</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Tutum Technology
+                        </h4>
+                        <p class="timeline-description">
+                            Desarrollo de módulos Odoo para proyectos empresariales: Administrador de archivos (interno), Fibra Infraex, Administrador de personal Les Croissants. Implementación de soluciones personalizadas para gestión empresarial.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Odoo</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Gestión Empresarial</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>2021 - 2023</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador Freelance E-commerce</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Freelance / Proyectos Independientes
+                        </h4>
+                        <p class="timeline-description">
+                            Desarrollo de aplicaciones de visualización de producto con Unity y Godot para e-commerce. Creación de experiencias 3D interactivas para plataformas de comercio electrónico.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Unity</span>
+                            <span class="tag">Godot</span>
+                            <span class="tag">E-commerce</span>
+                            <span class="tag">3D</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Enero 2016 - Presente</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador de Addons para Odoo</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Odoo Mexico
+                        </h4>
+                        <p class="timeline-description">
+                            Desarrollo de addons y módulos completos, sistemas de facturación y descarga masiva de XML, entre otras soluciones para Odoo en México. Implementación de personalizaciones empresariales y optimización de procesos de negocio.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Odoo</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Facturación XML</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Septiembre 2021 - Diciembre 2022</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador Senior</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Meus Technology SA de CV
+                        </h4>
+                        <p class="timeline-description">
+                            Desarrollo de sistema de facturación y descarga masiva de XML SAT, así como desarrollo de inteligencia artificial para análisis de video, Machine Learning, OpenCV, TensorFlow entre otras tecnologías.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">OpenCV</span>
+                            <span class="tag">TensorFlow</span>
+                            <span class="tag">IA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Mayo 2019 - Julio 2023</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador Senior</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Raj Digital SA de CV
+                        </h4>
+                        <p class="timeline-description">
+                            Desarrollo de diversos sistemas en la nube, facturación, análisis de XML, sistema de gestión de viáticos para empresas, software dental, HelpDesk, análisis OCR de datos, automatizaciones en WhatsApp, así como programación e implementación de cluster, Docker y Kubernetes.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Docker</span>
+                            <span class="tag">Kubernetes</span>
+                            <span class="tag">Cloud</span>
+                            <span class="tag">OCR</span>
+                            <span class="tag">WhatsApp API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 6 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Septiembre 2014 - Septiembre 2018</span>
+                        </div>
+                        <h3 class="timeline-title">Desarrollador Senior</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            DimexPDG
+                        </h4>
+                        <p class="timeline-description">
+                            Sistema de cálculo de rotación en engranes industriales, análisis y desempeño de recursos humanos y contabilidad. Desarrollo de soluciones especializadas para industria manufacturera.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Sistemas Industriales</span>
+                            <span class="tag">Recursos Humanos</span>
+                            <span class="tag">Contabilidad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Febrero 2013 - Diciembre 2014</span>
+                        </div>
+                        <h3 class="timeline-title">Soporte TI / Jefe de Departamento</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Sayma Mexico
+                        </h4>
+                        <p class="timeline-description">
+                            Auditor de infraestructura en redes, telefonía IP, cámaras de video vigilancia. Jefe de departamento de Cómputo (site), administrador de recursos en la nube AWS, Google Cloud Platform.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Google Cloud</span>
+                            <span class="tag">Redes</span>
+                            <span class="tag">Telefonía IP</span>
+                            <span class="tag">CCTV</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 6 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Marzo 2007 - Mayo 2013</span>
+                        </div>
+                        <h3 class="timeline-title">Jefe de Departamento de Cómputo</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Grupo Rodsa SA de CV
+                        </h4>
+                        <p class="timeline-description">
+                            Soporte en todo el equipo de cómputo en general, redes, telefonía, video vigilancia, site, así como desarrollo de página web y sistema de autocotización en línea.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Soporte Técnico</span>
+                            <span class="tag">Desarrollo Web</span>
+                            <span class="tag">Redes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia 7 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">
+                            <span>Mayo 2003 - Marzo 2005</span>
+                        </div>
+                        <h3 class="timeline-title">Soporte TI</h3>
+                        <h4 class="timeline-company">
+                            <i class="fas fa-building"></i>
+                            Instituto Federal Electoral IFE (INE)
+                        </h4>
+                        <p class="timeline-description">
+                            Servicio de soporte técnico, actualizaciones para software Oracle Linux y Oracle VM.
+                        </p>
+                        <div class="timeline-tags">
+                            <span class="tag">Oracle Linux</span>
+                            <span class="tag">Oracle VM</span>
+                            <span class="tag">Soporte TI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Educación -->
+    <section id="educacion" class="education section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Educación</span>
+                <h2 class="section-title">Formación Académica</h2>
+            </div>
+            <div class="education-grid">
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="education-title">[TÍTULO OBTENIDO]</h3>
+                    <h4 class="education-institution">[INSTITUCIÓN]</h4>
+                    <span class="education-date">[AÑO INICIO] - [AÑO FIN]</span>
+                    <p class="education-description">[DESCRIPCIÓN ADICIONAL]</p>
+                </div>
+                <!-- Agrega más según tu PDF -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Habilidades -->
+    <section id="habilidades" class="skills section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Habilidades</span>
+                <h2 class="section-title">Mis Competencias</h2>
+                <p class="section-subtitle">Tecnologías y herramientas que domino</p>
+            </div>
+            <div class="skills-content">
+                <!-- Habilidades Técnicas -->
+                <div class="skills-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-code"></i>
+                        Técnicas
+                    </h3>
+                    <div class="skills-grid">
+                        <!-- Skill 1 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Python</span>
+                                <span class="skill-percentage">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 2 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">JavaScript</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 3 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Java</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 4 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">HTML5 / CSS3</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 5 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Odoo / FastAPI</span>
+                                <span class="skill-percentage">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 6 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">OpenCV / TensorFlow</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 7 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Unity / Godot / GoLand</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="75"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 8 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">PostgreSQL / MySQL</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 9 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Docker / Kubernetes</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 10 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">AWS / GCP / Oracle Cloud</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 11 -->
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Mojo</span>
+                                <span class="skill-percentage">65%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="65"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Habilidades Blandas -->
+                <div class="skills-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-users"></i>
+                        Blandas
+                    </h3>
+                    <div class="soft-skills">
+                        <span class="soft-skill">Liderazgo</span>
+                        <span class="soft-skill">Trabajo en Equipo</span>
+                        <span class="soft-skill">Autogestión</span>
+                        <span class="soft-skill">Colaboración</span>
+                        <span class="soft-skill">Resolución de Problemas</span>
+                    </div>
+                </div>
+
+                <!-- Herramientas -->
+                <div class="skills-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-tools"></i>
+                        Herramientas
+                    </h3>
+                    <div class="tools-grid">
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Docker</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Kubernetes</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>AWS</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Google Cloud Platform</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Oracle Cloud</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Unity</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Godot</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Odoo</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>OpenCV</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>TensorFlow</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="tool-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>WhatsApp API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificaciones -->
+    <section id="certificaciones" class="certifications section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Certificaciones</span>
+                <h2 class="section-title">Capacitación Continua</h2>
+            </div>
+            <div class="certifications-grid">
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="certification-title">Maestría en Ciencias de la Computación</h3>
+                    <p class="certification-issuer">En curso desde Enero 2023</p>
+                    <span class="certification-date">2023 - Presente</span>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="certification-title">Ingeniería en Tecnología de la Información</h3>
+                    <p class="certification-issuer">Universidad Autónoma Fidel Velázquez</p>
+                    <span class="certification-date">2014</span>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="certification-title">Técnico Superior Universitario (Redes y Telecomunicaciones)</h3>
+                    <p class="certification-issuer">Universidad Autónoma Fidel Velázquez</p>
+                    <span class="certification-date">2012 - 2014</span>
+                </div>
+                <div class="certification-card">
+                    <div class="certification-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="certification-title">Inglés Técnico (Intermedio)</h3>
+                    <p class="certification-issuer">Colegio de Bachilleres</p>
+                    <span class="certification-date">Certificado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="contact section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Contacto</span>
+                <h2 class="section-title">Hablemos</h2>
+                <p class="section-subtitle">¿Interesado en trabajar juntos? ¡Escríbeme!</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <a href="mailto:angelip56@gmail.com" class="contact-link">angelip56@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Teléfono</h3>
+                            <a href="tel:+525519385839" class="contact-link">+52 55 1938 5839</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Ubicación</h3>
+                            <span>Tlalnepantla de Baz, Estado de México</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <h3>¿Listo para empezar?</h3>
+                    <p>Estoy abierto a nuevas oportunidades y proyectos interesantes.</p>
+                    <div class="contact-buttons">
+                        <a href="mailto:angelip56@gmail.com" class="btn btn-primary btn-large">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensaje
+                        </a>
+                        <button class="btn btn-secondary btn-large" onclick="downloadPDF()">
+                            <i class="fas fa-file-pdf"></i>
+                            Descargar CV
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="brand-text">José Ángel Ávila Cruz</span>
+                    <p>Desarrollado con ❤️ usando HTML, CSS y JavaScript</p>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/angel-avilas" class="social-link" aria-label="LinkedIn" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100024238763838" class="social-link" aria-label="Facebook" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="mailto:angelip56@gmail.com" class="social-link" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 José Ángel Ávila Cruz. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button id="scroll-top" class="scroll-top" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
