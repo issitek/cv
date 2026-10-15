@@ -300,7 +300,7 @@ async function generatePDF(btn, originalText) {
         doc.setFontSize(14);
         doc.setTextColor(primaryColor);
         doc.setFont('helvetica', 'normal');
-        doc.text('Desarrollador de Software', textCenterX, y, { align: 'center' });
+        doc.text('Desarrollador de Software Senior', textCenterX, y, { align: 'center' });
         y += 7;
         
         doc.setFontSize(10);
@@ -332,10 +332,17 @@ async function generatePDF(btn, originalText) {
         doc.setFontSize(10);
         doc.setTextColor(textColor);
         doc.setFont('helvetica', 'normal');
-        const perfilText = 'Desarrollador de software con experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Dominio de varias plataformas, lenguajes y sistemas integrados. Experiencia en las herramientas y procedimientos de desarrollo más vanguardistas, con especialización en arquitectura de microservicios en la nube (AWS Fargate, ECS y Lambda), APIs con FastAPI y Flask, sistemas de facturación CFDI 4.0 y Carta Porte, inteligencia artificial y automatización de WhatsApp. Capaz de autogestión eficaz en proyectos independientes. Buenas habilidades de colaboración dentro de un equipo productivo.';
-        const perfilLines = doc.splitTextToSize(perfilText, contentWidth);
-        doc.text(perfilLines, marginLeft, y);
-        y += perfilLines.length * 5 + 5;
+        const perfilParrafos = [
+            'Desarrollador de Software Senior con experiencia en el diseño, desarrollo, integración y despliegue de soluciones empresariales, APIs y sistemas basados en arquitecturas de microservicios. Especializado en desarrollo backend con Python, FastAPI y Flask, integración de bases de datos relacionales y configuración de servicios en la nube mediante Amazon Web Services (AWS).',
+            'Experiencia en el desarrollo de aplicaciones empresariales para la gestión de procesos administrativos, facturación electrónica CFDI 4.0, Carta Porte, seguimiento de operaciones, administración de gastos y automatización de flujos de trabajo. Experiencia en integración con servicios del SAT, procesamiento documental mediante OCR, automatizaciones con WhatsApp e incorporación de funcionalidades de inteligencia artificial.',
+            'Trayectoria complementaria en desarrollo y personalización de módulos Odoo, procesamiento de información, visión por computadora y soluciones interactivas 3D. Enfoque en la resolución de problemas técnicos, integración de sistemas, mantenibilidad del software y desarrollo de soluciones alineadas con las necesidades operativas del negocio.'
+        ];
+        perfilParrafos.forEach(parrafo => {
+            const lineas = doc.splitTextToSize(parrafo, contentWidth);
+            doc.text(lineas, marginLeft, y);
+            y += lineas.length * 5 + 3;
+        });
+        y += 2;
         
         // ==================== EXPERIENCIA ====================
         if (y > pageHeight - 60) { doc.addPage(); y = marginTop; }
@@ -350,15 +357,28 @@ async function generatePDF(btn, originalText) {
         doc.line(marginLeft, y, pageWidth - marginLeft, y);
         y += 5;
         
+        const liderTecnicoResp = [
+            'Liderazgo y coordinación del equipo de desarrollo.',
+            'Definición de arquitectura, estándares y buenas prácticas de código.',
+            'Planificación, estimación y seguimiento de los proyectos.',
+            'Revisión de código, mentoría y aseguramiento de la calidad.'
+        ];
+        const backendResp = [
+            'Desarrollo backend con Python y frameworks web (FastAPI / Flask).',
+            'Diseño e integración de bases de datos relacionales (PostgreSQL / MySQL).',
+            'Construcción y documentación de APIs y servicios.',
+            'Optimización, pruebas y mantenimiento del software.'
+        ];
+        
         const experiencias = [
-            { cargo: 'Proyectos 2026', empresa: 'Meustech', periodo: '2026', descripcion: 'Pedimento de importación con seguimiento aduanero, viáticos con interfaz de arrastrar y soltar, análisis de documentos con OCR, vacaciones, facturación CFDI 4.0 y Carta Porte. Arquitectura de microservicios en AWS Fargate (ECS), Python y FastAPI, PostgreSQL e integración con servicios del SAT.' },
-            { cargo: 'Proyectos 2026', empresa: 'Precitools', periodo: '2026', descripcion: 'Administración de gastos con reportes y aprobaciones, atención al cliente con chatbot y WhatsApp con integraciones de IA, facturación CFDI 4.0 y Carta Porte. Microservicios en AWS (Fargate, ECS y Lambda) con APIs en FastAPI y Flask.' },
-            { cargo: 'Desarrollador Odoo', empresa: 'Tutum Technology', periodo: '2023 - 2025', descripcion: 'Módulos Odoo para proyectos empresariales: Administrador de archivos, Fibra Infraex, Administrador de personal Les Croissants. Soluciones personalizadas con Python y PostgreSQL.' },
-            { cargo: 'Desarrollador Freelance', empresa: 'Proyectos Independientes', periodo: '2021 - 2023', descripcion: 'Aplicaciones de visualización de producto con Unity y Godot para e-commerce, con experiencias 3D interactivas.' },
-            { cargo: 'Desarrollador Odoo', empresa: 'Odoo Mexico', periodo: '2016 - Presente', descripcion: 'Addons y módulos completos, sistemas de facturación electrónica (CFDI) y descarga masiva de XML del SAT, con optimización de procesos de negocio.' },
-            { cargo: 'Desarrollador Senior', empresa: 'Meus Technology SA de CV', periodo: '2021 - 2022', descripcion: 'Facturación electrónica y descarga masiva de XML del SAT, IA para análisis de video en tiempo real, Machine Learning, visión por computadora con OpenCV y modelos con TensorFlow.' },
-            { cargo: 'Desarrollador Senior', empresa: 'Raj Digital SA de CV', periodo: '2019 - 2023', descripcion: 'Sistemas en la nube con arquitectura de microservicios, facturación, gestión de viáticos, OCR y automatizaciones en WhatsApp. Clústeres, Docker, Kubernetes y servicios AWS (Fargate, ECS, Lambda y S3).' },
-            { cargo: 'Desarrollador Senior', empresa: 'DimexPDG', periodo: '2014 - 2018', descripcion: 'Cálculo de rotación en engranes industriales, análisis de recursos humanos y contabilidad con reportes para toma de decisiones.' }
+            { cargo: 'Líder Técnico', empresa: 'Meustech', periodo: '2026', descripcion: 'Pedimento de importación con seguimiento aduanero, viáticos con interfaz de arrastrar y soltar, análisis de documentos con OCR, vacaciones, facturación CFDI 4.0 y Carta Porte. Arquitectura de microservicios en AWS Fargate (ECS), Python y FastAPI, PostgreSQL e integración con servicios del SAT.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Líder Técnico', empresa: 'Precitools', periodo: '2026', descripcion: 'Administración de gastos con reportes y aprobaciones, atención al cliente con chatbot y WhatsApp con integraciones de IA, facturación CFDI 4.0 y Carta Porte. Microservicios en AWS (Fargate, ECS y Lambda) con APIs en FastAPI y Flask.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Desarrollador Odoo', empresa: 'Tutum Technology', periodo: '2023 - 2025', descripcion: 'Módulos Odoo para proyectos empresariales: Administrador de archivos, Fibra Infraex, Administrador de personal Les Croissants. Soluciones personalizadas con Python y PostgreSQL.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Líder Técnico', empresa: 'Freelance / Proyectos Independientes', periodo: '2021 - 2023', descripcion: 'Aplicaciones de visualización de producto con Unity y Godot para e-commerce, con experiencias 3D interactivas.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Líder Técnico', empresa: 'Odoo Mexico', periodo: '2016 - Presente', descripcion: 'Addons y módulos completos, sistemas de facturación electrónica (CFDI) y descarga masiva de XML del SAT, con optimización de procesos de negocio.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Líder Técnico', empresa: 'Meus Technology SA de CV', periodo: '2021 - 2022', descripcion: 'Facturación electrónica y descarga masiva de XML del SAT, IA para análisis de video en tiempo real, Machine Learning, visión por computadora con OpenCV y modelos con TensorFlow.', responsabilidades: liderTecnicoResp },
+            { cargo: 'Líder Técnico', empresa: 'Raj Digital SA de CV', periodo: '2019 - 2023', descripcion: 'Sistemas en la nube con arquitectura de microservicios, facturación, gestión de viáticos, OCR y automatizaciones en WhatsApp. Clústeres, Docker, Kubernetes y servicios AWS (Fargate, ECS, Lambda y S3).', responsabilidades: liderTecnicoResp },
+            { cargo: 'Desarrollador Backend Python', empresa: 'DimexPDG', periodo: '2014 - 2018', descripcion: 'Cálculo de rotación en engranes industriales, análisis de recursos humanos y contabilidad con reportes para toma de decisiones.', responsabilidades: backendResp }
         ];
         
         experiencias.forEach(exp => {
@@ -385,7 +405,18 @@ async function generatePDF(btn, originalText) {
             doc.setTextColor(textColor);
             const descLines = doc.splitTextToSize(exp.descripcion, contentWidth);
             doc.text(descLines, marginLeft, y);
-            y += descLines.length * 4 + 6;
+            y += descLines.length * 4 + 2;
+            
+            if (exp.responsabilidades) {
+                doc.setFontSize(8.5);
+                exp.responsabilidades.forEach(resp => {
+                    if (y > pageHeight - 20) { doc.addPage(); y = marginTop; }
+                    const respLines = doc.splitTextToSize('• ' + resp, contentWidth - 4);
+                    doc.text(respLines, marginLeft + 4, y);
+                    y += respLines.length * 4;
+                });
+            }
+            y += 5;
         });
         
         // ==================== HABILIDADES ====================
