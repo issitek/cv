@@ -1438,3 +1438,32 @@ img {
         box-shadow: none !important;
     }
 }
+
+/* ========================================
+   BADGES - INDISPENSABLE / DESEABLE
+   ======================================== */
+.tech-badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: white;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tool-item:hover .tech-badge {
+    background: white;
+    color: var(--primary-color);
+}
+
+.tech-badge.desirable {
+    background: var(--secondary-color);
+}
+
+.tool-item:hover .tech-badge.desirable {
+    background: white;
+    color: var(--secondary-color);
+}

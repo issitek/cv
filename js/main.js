@@ -251,7 +251,17 @@ function downloadPDF() {
     document.head.appendChild(script);
 }
 
-function generatePDF(btn, originalText) {
+function loadImage(src) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = src;
+    });
+}
+
+async function generatePDF(btn, originalText) {
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
@@ -268,28 +278,44 @@ function generatePDF(btn, originalText) {
         const textColor = '#1f2937';
         const grayColor = '#6b7280';
         
-        // ==================== HEADER ====================
+        // ==================== HEADER CON FOTO ====================
+        const photo = await loadImage('img/Para_cv.jpg');
+        let textCenterX = pageWidth / 2;
+        const photoH = 30;
+        if (photo) {
+            const photoW = 18;
+            doc.addImage(photo, 'JPEG', marginLeft, marginTop, photoW, photoH);
+            doc.setDrawColor(primaryColor);
+            doc.setLineWidth(0.5);
+            doc.rect(marginLeft, marginTop, photoW, photoH);
+            textCenterX = (marginLeft + photoW + 5 + (pageWidth - marginLeft)) / 2;
+        }
+        
         doc.setFontSize(22);
         doc.setTextColor(textColor);
         doc.setFont('helvetica', 'bold');
-        doc.text('José Ángel Ávila Cruz', pageWidth / 2, y, { align: 'center' });
-        y += 8;
+        doc.text('José Ángel Ávila Cruz', textCenterX, y + 5, { align: 'center' });
+        y += 10;
         
         doc.setFontSize(14);
         doc.setTextColor(primaryColor);
         doc.setFont('helvetica', 'normal');
-        doc.text('Desarrollador de Software', pageWidth / 2, y, { align: 'center' });
+        doc.text('Desarrollador de Software', textCenterX, y, { align: 'center' });
         y += 7;
         
         doc.setFontSize(10);
         doc.setTextColor(grayColor);
-        doc.text('angelip56@gmail.com | +52 55 1938 5839 | Tlalnepantla de Baz, Estado de México', pageWidth / 2, y, { align: 'center' });
-        y += 10;
+        doc.text('angelip56@gmail.com | +52 55 1938 5839', textCenterX, y, { align: 'center' });
+        y += 4;
+        doc.text('Tlalnepantla de Baz, Estado de México', textCenterX, y, { align: 'center' });
+        y += 6;
         
+        // Línea divisoria por debajo del encabezado y la foto
+        const dividerY = photo ? Math.max(y, marginTop + photoH + 3) : y;
         doc.setDrawColor(primaryColor);
         doc.setLineWidth(0.5);
-        doc.line(marginLeft, y, pageWidth - marginLeft, y);
-        y += 10;
+        doc.line(marginLeft, dividerY, pageWidth - marginLeft, dividerY);
+        y = dividerY + 8;
         
         // ==================== PERFIL ====================
         doc.setFontSize(12);
@@ -306,7 +332,7 @@ function generatePDF(btn, originalText) {
         doc.setFontSize(10);
         doc.setTextColor(textColor);
         doc.setFont('helvetica', 'normal');
-        const perfilText = 'Desarrollador de software con experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Dominio de varias plataformas, lenguajes y sistemas integrados. Experiencia en las herramientas y procedimientos de desarrollo más vanguardistas. Capaz de autogestión eficaz en proyectos independientes. Buenas habilidades de colaboración dentro de un equipo productivo.';
+        const perfilText = 'Desarrollador de software con experiencia en diseño, instalación, pruebas y mantenimiento de sistemas de software. Dominio de varias plataformas, lenguajes y sistemas integrados. Experiencia en las herramientas y procedimientos de desarrollo más vanguardistas, con especialización en arquitectura de microservicios en la nube (AWS Fargate, ECS y Lambda), APIs con FastAPI y Flask, sistemas de facturación CFDI 4.0 y Carta Porte, inteligencia artificial y automatización de WhatsApp. Capaz de autogestión eficaz en proyectos independientes. Buenas habilidades de colaboración dentro de un equipo productivo.';
         const perfilLines = doc.splitTextToSize(perfilText, contentWidth);
         doc.text(perfilLines, marginLeft, y);
         y += perfilLines.length * 5 + 5;
@@ -325,12 +351,14 @@ function generatePDF(btn, originalText) {
         y += 5;
         
         const experiencias = [
-            { cargo: 'Desarrollador Odoo', empresa: 'Tutum Technology', periodo: '2023 - Presente', descripcion: 'Desarrollo de módulos Odoo para proyectos empresariales: Administrador de archivos, Fibra Infraex, Administrador de personal Les Croissants.' },
-            { cargo: 'Desarrollador Freelance', empresa: 'Proyectos Independientes', periodo: '2021 - 2023', descripcion: 'Desarrollo de aplicaciones de visualización de producto con Unity y Godot para e-commerce.' },
-            { cargo: 'Desarrollador Odoo', empresa: 'Odoo Mexico', periodo: '2016 - Presente', descripcion: 'Desarrollo de addons y módulos completos, sistemas de facturación y descarga masiva de XML.' },
-            { cargo: 'Desarrollador Senior', empresa: 'Meus Technology SA de CV', periodo: '2021 - 2022', descripcion: 'Desarrollo de sistema de facturación y descarga masiva de XML SAT, desarrollo de IA, Machine Learning, OpenCV, TensorFlow.' },
-            { cargo: 'Desarrollador Senior', empresa: 'Raj Digital SA de CV', periodo: '2019 - 2023', descripcion: 'Desarrollo de sistemas en la nube, facturación, análisis de XML, gestión de viáticos, software dental, HelpDesk, OCR, Docker, Kubernetes.' },
-            { cargo: 'Desarrollador Senior', empresa: 'DimexPDG', periodo: '2014 - 2018', descripcion: 'Sistema de cálculo de rotación en engranes industriales, análisis de recursos humanos y contabilidad.' }
+            { cargo: 'Proyectos 2026', empresa: 'Meustech', periodo: '2026', descripcion: 'Pedimento de importación con seguimiento aduanero, viáticos con interfaz de arrastrar y soltar, análisis de documentos con OCR, vacaciones, facturación CFDI 4.0 y Carta Porte. Arquitectura de microservicios en AWS Fargate (ECS), Python y FastAPI, PostgreSQL e integración con servicios del SAT.' },
+            { cargo: 'Proyectos 2026', empresa: 'Precitools', periodo: '2026', descripcion: 'Administración de gastos con reportes y aprobaciones, atención al cliente con chatbot y WhatsApp con integraciones de IA, facturación CFDI 4.0 y Carta Porte. Microservicios en AWS (Fargate, ECS y Lambda) con APIs en FastAPI y Flask.' },
+            { cargo: 'Desarrollador Odoo', empresa: 'Tutum Technology', periodo: '2023 - 2025', descripcion: 'Módulos Odoo para proyectos empresariales: Administrador de archivos, Fibra Infraex, Administrador de personal Les Croissants. Soluciones personalizadas con Python y PostgreSQL.' },
+            { cargo: 'Desarrollador Freelance', empresa: 'Proyectos Independientes', periodo: '2021 - 2023', descripcion: 'Aplicaciones de visualización de producto con Unity y Godot para e-commerce, con experiencias 3D interactivas.' },
+            { cargo: 'Desarrollador Odoo', empresa: 'Odoo Mexico', periodo: '2016 - Presente', descripcion: 'Addons y módulos completos, sistemas de facturación electrónica (CFDI) y descarga masiva de XML del SAT, con optimización de procesos de negocio.' },
+            { cargo: 'Desarrollador Senior', empresa: 'Meus Technology SA de CV', periodo: '2021 - 2022', descripcion: 'Facturación electrónica y descarga masiva de XML del SAT, IA para análisis de video en tiempo real, Machine Learning, visión por computadora con OpenCV y modelos con TensorFlow.' },
+            { cargo: 'Desarrollador Senior', empresa: 'Raj Digital SA de CV', periodo: '2019 - 2023', descripcion: 'Sistemas en la nube con arquitectura de microservicios, facturación, gestión de viáticos, OCR y automatizaciones en WhatsApp. Clústeres, Docker, Kubernetes y servicios AWS (Fargate, ECS, Lambda y S3).' },
+            { cargo: 'Desarrollador Senior', empresa: 'DimexPDG', periodo: '2014 - 2018', descripcion: 'Cálculo de rotación en engranes industriales, análisis de recursos humanos y contabilidad con reportes para toma de decisiones.' }
         ];
         
         experiencias.forEach(exp => {
@@ -373,7 +401,7 @@ function generatePDF(btn, originalText) {
         doc.line(marginLeft, y, pageWidth - marginLeft, y);
         y += 5;
         
-        const skills = ['Python', 'JavaScript', 'Java', 'HTML5/CSS3', 'Odoo', 'FastAPI', 'OpenCV', 'TensorFlow', 'Unity', 'Godot', 'GoLand', 'Mojo', 'PostgreSQL', 'MySQL', 'Docker', 'Kubernetes', 'AWS', 'GCP', 'Oracle Cloud'];
+        const skills = ['Python', 'JavaScript', 'Java', 'HTML5/CSS3', 'Odoo', 'FastAPI', 'Flask', 'Django', 'Microservicios', 'SQLAlchemy', 'Arquitectura Hexagonal', 'OpenCV', 'TensorFlow', 'Unity', 'Godot', 'GoLand', 'Mojo', 'PostgreSQL', 'MySQL', 'Redes', 'Telefonía IP', 'Antenas', 'Podman', 'Docker', 'Kubernetes', 'AWS', 'AWS Fargate', 'ECS', 'Lambda', 'Google Cloud Platform', 'Oracle Cloud', 'Consola GCP'];
         
         let col = 0;
         let row = 0;
@@ -406,8 +434,8 @@ function generatePDF(btn, originalText) {
         
         const formacion = [
             { titulo: 'Maestría en Ciencias de la Computación', institucion: 'Universidad (En curso)', periodo: '2023 - Presente' },
-            { titulo: 'Ingeniería en Tecnología de la Información', institucion: 'Universidad Autónoma Fidel Velázquez', periodo: '2014' },
-            { titulo: 'Técnico Superior Universitario (Redes)', institucion: 'Universidad Autónoma Fidel Velázquez', periodo: '2012 - 2014' }
+            { titulo: 'Ingeniería en Tecnología de la Información', institucion: 'Universidad Tecnológica Fidel Velázquez', periodo: '2012 - 2018' },
+            { titulo: 'Técnico Superior Universitario (Redes)', institucion: 'Universidad Tecnológica Fidel Velázquez', periodo: '2012 - 2014' }
         ];
         
         formacion.forEach(f => {
