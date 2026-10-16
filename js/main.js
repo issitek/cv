@@ -277,6 +277,17 @@ async function generatePDF(btn, originalText) {
         const primaryColor = '#6366f1';
         const textColor = '#1f2937';
         const grayColor = '#6b7280';
+        const marginBottom = 18;
+
+        // Salto de página seguro: reserva espacio y salta de hoja si la información no cabe
+        function ensureSpace(needed) {
+            if (y + needed > pageHeight - marginBottom) {
+                doc.addPage();
+                y = marginTop;
+                return true;
+            }
+            return false;
+        }
         
         // ==================== HEADER CON FOTO ====================
         const photo = await loadImage('img/Para_cv.jpg');
@@ -339,13 +350,17 @@ async function generatePDF(btn, originalText) {
         ];
         perfilParrafos.forEach(parrafo => {
             const lineas = doc.splitTextToSize(parrafo, contentWidth);
-            doc.text(lineas, marginLeft, y);
-            y += lineas.length * 5 + 3;
+            lineas.forEach(linea => {
+                ensureSpace(5);
+                doc.text(linea, marginLeft, y);
+                y += 5;
+            });
+            y += 3;
         });
         y += 2;
         
         // ==================== EXPERIENCIA ====================
-        if (y > pageHeight - 60) { doc.addPage(); y = marginTop; }
+        ensureSpace(30);
         
         doc.setFontSize(12);
         doc.setTextColor(primaryColor);
@@ -382,7 +397,7 @@ async function generatePDF(btn, originalText) {
         ];
         
         experiencias.forEach(exp => {
-            if (y > pageHeight - 40) { doc.addPage(); y = marginTop; }
+            ensureSpace(20);
             
             doc.setFontSize(10);
             doc.setTextColor(textColor);
@@ -404,23 +419,29 @@ async function generatePDF(btn, originalText) {
             doc.setFontSize(9);
             doc.setTextColor(textColor);
             const descLines = doc.splitTextToSize(exp.descripcion, contentWidth);
-            doc.text(descLines, marginLeft, y);
-            y += descLines.length * 4 + 2;
+            descLines.forEach(linea => {
+                ensureSpace(5);
+                doc.text(linea, marginLeft, y);
+                y += 4;
+            });
+            y += 2;
             
             if (exp.responsabilidades) {
                 doc.setFontSize(8.5);
                 exp.responsabilidades.forEach(resp => {
-                    if (y > pageHeight - 20) { doc.addPage(); y = marginTop; }
                     const respLines = doc.splitTextToSize('• ' + resp, contentWidth - 4);
-                    doc.text(respLines, marginLeft + 4, y);
-                    y += respLines.length * 4;
+                    respLines.forEach(linea => {
+                        ensureSpace(5);
+                        doc.text(linea, marginLeft + 4, y);
+                        y += 4;
+                    });
                 });
             }
             y += 5;
         });
         
         // ==================== HABILIDADES ====================
-        if (y > pageHeight - 50) { doc.addPage(); y = marginTop; }
+        ensureSpace(30);
         
         doc.setFontSize(12);
         doc.setTextColor(primaryColor);
@@ -434,24 +455,22 @@ async function generatePDF(btn, originalText) {
         
         const skills = ['Python', 'JavaScript', 'Java', 'HTML5/CSS3', 'Odoo', 'FastAPI', 'Flask', 'Django', 'Microservicios', 'SQLAlchemy', 'Arquitectura Hexagonal', 'OpenCV', 'TensorFlow', 'Unity', 'Godot', 'GoLand', 'Mojo', 'PostgreSQL', 'MySQL', 'Redes', 'Telefonía IP', 'Antenas', 'Podman', 'Docker', 'Kubernetes', 'AWS', 'AWS Fargate', 'ECS', 'Lambda', 'Google Cloud Platform', 'Oracle Cloud', 'Consola GCP'];
         
-        let col = 0;
-        let row = 0;
         const colWidth = contentWidth / 2;
         
         doc.setFontSize(9);
         doc.setTextColor(textColor);
         
-        skills.forEach((skill, index) => {
-            const x = marginLeft + (col * colWidth);
-            doc.text('• ' + skill, x, y + (row * 5));
-            col++;
-            if (col >= 2) { col = 0; row++; }
-        });
+        for (let i = 0; i < skills.length; i += 2) {
+            ensureSpace(5);
+            doc.text('• ' + skills[i], marginLeft, y);
+            if (skills[i + 1]) doc.text('• ' + skills[i + 1], marginLeft + colWidth, y);
+            y += 5;
+        }
         
-        y += (Math.ceil(skills.length / 2) + 1) * 5 + 10;
+        y += 10;
         
         // ==================== FORMACIÓN ====================
-        if (y > pageHeight - 50) { doc.addPage(); y = marginTop; }
+        ensureSpace(30);
         
         doc.setFontSize(12);
         doc.setTextColor(primaryColor);
@@ -470,6 +489,7 @@ async function generatePDF(btn, originalText) {
         ];
         
         formacion.forEach(f => {
+            ensureSpace(12);
             doc.setFontSize(10);
             doc.setTextColor(textColor);
             doc.setFont('helvetica', 'bold');
@@ -485,6 +505,7 @@ async function generatePDF(btn, originalText) {
         
         // ==================== IDIOMAS ====================
         y += 5;
+        ensureSpace(16);
         doc.setFontSize(12);
         doc.setTextColor(primaryColor);
         doc.setFont('helvetica', 'bold');
